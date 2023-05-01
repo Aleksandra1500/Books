@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SecondFragment"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/registerText"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="Rejestracja"
+        android:textAlignment="center"
+        android:textSize="20sp"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/registerEmail"
+        android:layout_width="280dp"
+        android:layout_height="70dp"
+        android:hint="Wprowadź email" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/registerPass"
+        android:layout_width="280dp"
+        android:layout_height="70dp"
+        android:hint="Wprowadź hasło" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/registerPass2"
+        android:layout_width="280dp"
+        android:layout_height="70dp"
+        android:hint="Powtórz hasło" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="Zarejestruj"
+        android:textSize="18sp"/>
+
+
+</LinearLayout>
