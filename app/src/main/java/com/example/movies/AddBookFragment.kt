@@ -61,16 +61,6 @@ class AddBookFragment : DialogFragment() {
         }
 
         registerEvents()
-
-        bindingBookRow.readedOrNotCheckBox.setOnClickListener{
-            val readed : Boolean
-            readed = bindingBookRow.readedOrNotCheckBox.isChecked
-            val bookObject = BookObject("","",readed)
-            val bookId = arguments?.getString("bookId").toString()
-            val currentBookData = BooksData(bookId, bookObject)
-
-            listener.onUpdateBook(currentBookData, _binding.addTitle, _binding.addAuthor)
-        }
     }
 
     private fun registerEvents(){
@@ -104,6 +94,6 @@ class AddBookFragment : DialogFragment() {
 
     interface DialogNextBtnClickListener{
         fun onSaveBook(bookObject : BookObject, bookTitleInput : TextInputEditText, bookAuthorInput : TextInputEditText)
-        fun onUpdateBook(booksData: BooksData, bookTitleInput : TextInputEditText, bookAuthorInput : TextInputEditText)
+        fun onUpdateBook(booksData: BooksData, bookTitleInput : TextInputEditText?, bookAuthorInput : TextInputEditText?)
     }
 }

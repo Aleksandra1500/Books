@@ -2,17 +2,9 @@ package com.example.movies.utlis
 
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.movies.AddBookFragment
-import com.example.movies.MainFragment
 import com.example.movies.databinding.BookRowBinding
-import com.example.movies.databinding.FragmentMainBinding
-import com.google.android.material.textfield.TextInputEditText
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 
 class BooksAdapter(private val list: MutableList<BooksData>) : RecyclerView.Adapter<BooksAdapter.BooksViewHolder>() {
 
@@ -26,10 +18,6 @@ class BooksAdapter(private val list: MutableList<BooksData>) : RecyclerView.Adap
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BooksViewHolder {
         val binding = BookRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        var _binding = FragmentMainBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        binding.readedOrNotCheckBox.setOnClickListener {
-            _binding.addBook.callOnClick()
-        }
 
         return BooksViewHolder(binding)
     }
@@ -56,6 +44,10 @@ class BooksAdapter(private val list: MutableList<BooksData>) : RecyclerView.Adap
                 binding.editBookButton.setOnClickListener{
                     listener?.onEditBtnClicked(this)
                 }
+
+                binding.readedOrNotCheckBox.setOnClickListener{
+                    listener?.onCheckBoxBtnClicked(this, binding.readedOrNotCheckBox.isChecked)
+                }
             }
         }
     }
@@ -63,5 +55,6 @@ class BooksAdapter(private val list: MutableList<BooksData>) : RecyclerView.Adap
     interface BookAdapterClicksInterface{
         fun onDeleteBtnClicked(booksData: BooksData)
         fun onEditBtnClicked(booksData: BooksData)
+        fun onCheckBoxBtnClicked(booksData: BooksData, checked: Boolean)
     }
 }

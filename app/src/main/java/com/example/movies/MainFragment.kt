@@ -22,7 +22,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import java.lang.reflect.TypeVariable
 
 
 class MainFragment : Fragment(), AddBookFragment.DialogNextBtnClickListener,
@@ -40,7 +39,7 @@ class MainFragment : Fragment(), AddBookFragment.DialogNextBtnClickListener,
     private lateinit var toReadList: MutableList<BooksData>
     private lateinit var readedList: MutableList<BooksData>
 
-    private lateinit var bookObject: BookObject
+    private var emptyTextInput: TextInputEditText? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +47,7 @@ class MainFragment : Fragment(), AddBookFragment.DialogNextBtnClickListener,
     ): View {
 
         _binding = FragmentMainBinding.inflate(inflater, container, false)
+
         return _binding.root
     }
 
@@ -165,8 +165,8 @@ class MainFragment : Fragment(), AddBookFragment.DialogNextBtnClickListener,
 
     override fun onUpdateBook(
         booksData: BooksData,
-        bookTitleInput: TextInputEditText,
-        bookAuthorInput: TextInputEditText
+        bookTitleInput: TextInputEditText?,
+        bookAuthorInput: TextInputEditText?
     ) {
         val map = HashMap<String, Any>()
         map[booksData.bookId] = booksData.bookObject!!
@@ -176,9 +176,15 @@ class MainFragment : Fragment(), AddBookFragment.DialogNextBtnClickListener,
             }else{
                 Toast.makeText(context, it.exception.toString(), Toast.LENGTH_SHORT).show()
             }
-            bookTitleInput.text = null
-            bookAuthorInput.text = null
-            addBookFragment!!.dismiss()
+            if (bookTitleInput != null) {
+                bookTitleInput.text = null
+            }
+            if (bookAuthorInput != null) {
+                bookAuthorInput.text = null
+            }
+            if(addBookFragment != null){
+                addBookFragment!!.dismiss()
+            }
         }
     }
 
@@ -199,5 +205,10 @@ class MainFragment : Fragment(), AddBookFragment.DialogNextBtnClickListener,
         addBookFragment = AddBookFragment.newInstance(booksData.bookId, booksData.bookObject)
         addBookFragment!!.setListener(this)
         addBookFragment!!.show(childFragmentManager, AddBookFragment.TAG)
+    }
+
+    override fun onCheckBoxBtnClicked(booksData: BooksData, checked: Boolean) {
+        booksData.bookObject?.readed = checked
+        onUpdateBook(booksData, emptyTextInput, emptyTextInput)
     }
 }
