@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".FirstFragment"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/md_theme_dark_secondary">
 
     <TextView
         android:id="@+id/loginText"
@@ -14,7 +15,8 @@
         android:layout_height="wrap_content"
         android:text="Login"
         android:textAlignment="center"
-        android:textSize="20sp"/>
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/loginEmail"
@@ -42,9 +44,10 @@
         android:id="@+id/buttonNoAccount"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:text="Nie mam jeszcze konta"
-        android:textSize="15sp"
         android:backgroundTint="#00000000"
-        android:textColor="#000"/>
+        android:text="Nie mam jeszcze konta"
+        android:textColor="#000"
+        android:textSize="15sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

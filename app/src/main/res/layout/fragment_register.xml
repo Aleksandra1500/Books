@@ -6,15 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".SecondFragment"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="@color/md_theme_dark_secondary">
 
     <TextView
         android:id="@+id/registerText"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Rejestracja"
         android:textAlignment="center"
-        android:textSize="20sp"/>
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/registerEmail"
@@ -26,13 +28,15 @@
         android:id="@+id/registerPass"
         android:layout_width="280dp"
         android:layout_height="70dp"
-        android:hint="Wprowadź hasło" />
+        android:hint="Wprowadź hasło"
+        android:inputType="textPassword"/>
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/registerPass2"
         android:layout_width="280dp"
         android:layout_height="70dp"
-        android:hint="Powtórz hasło" />
+        android:hint="Powtórz hasło"
+        android:inputType="textPassword"/>
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonRegister"
         android:layout_width="wrap_content"

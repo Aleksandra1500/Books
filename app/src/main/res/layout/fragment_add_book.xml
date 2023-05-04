@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:background="@color/md_theme_dark_secondary">
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/addTitle"
@@ -45,7 +46,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/baseline_cancel_24"
-        tools:ignore="SpeakableTextPresentCheck" />
+        tools:ignore="SpeakableTextPresentCheck"
+        android:backgroundTint="#00000000"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

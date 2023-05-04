@@ -6,26 +6,30 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView2"
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:backgroundTint="@color/md_theme_light_surfaceVariant"
+        app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:backgroundTint="@color/material_dynamic_neutral50"
-        app:cardUseCompatPadding="true"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="Tytuł"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/readedOrNotCheckBox"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/materialCardView2"
+        android:layout_marginTop="11dp"/>
 
     <TextView
         android:id="@+id/author"
@@ -40,11 +44,12 @@
         android:id="@+id/deleteBookButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/baseline_delete_24" />
+        app:srcCompat="@drawable/baseline_delete_24"
+        android:backgroundTint="#00000000"/>
 
     <ImageButton
         android:id="@+id/editBookButton"
@@ -53,7 +58,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/deleteBookButton"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/baseline_mode_edit_24" />
+        app:srcCompat="@drawable/baseline_mode_edit_24"
+        android:backgroundTint="#00000000"/>
 
     <CheckBox
         android:id="@+id/readedOrNotCheckBox"
@@ -62,7 +68,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="10dp"/>
+        android:layout_marginStart="15dp"/>
 
 
 
