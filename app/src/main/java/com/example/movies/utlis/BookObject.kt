@@ -6,12 +6,14 @@ import android.os.Parcelable
 data class BookObject(
     var bookTitle: String? = "",
     var bookAuthor: String? = "",
-    var readed:Boolean = false
+    var readed:Boolean = false,
+    var length:Long? = 0
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString(),
-        parcel.readByte() != 0.toByte()
+        parcel.readByte() != 0.toByte(),
+        parcel.readValue(Long::class.java.classLoader) as? Long
     ) {
     }
 
@@ -19,6 +21,7 @@ data class BookObject(
         parcel.writeString(bookTitle)
         parcel.writeString(bookAuthor)
         parcel.writeByte(if (readed) 1 else 0)
+        parcel.writeValue(length)
     }
 
     override fun describeContents(): Int {

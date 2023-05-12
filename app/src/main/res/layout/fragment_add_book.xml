@@ -15,8 +15,7 @@
         app:layout_constraintBottom_toTopOf="@+id/addAuthor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/closeAddingButton" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/addAuthor"
@@ -28,6 +27,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/addLength"
+        android:layout_width="280dp"
+        android:layout_height="70dp"
+        android:hint="Podaj długość"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addAuthor"/>
+
     <Button
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
@@ -36,7 +45,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addAuthor" />
+        app:layout_constraintTop_toBottomOf="@+id/addLength"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="10dp"/>
 
     <ImageButton
         android:id="@+id/closeAddingButton"

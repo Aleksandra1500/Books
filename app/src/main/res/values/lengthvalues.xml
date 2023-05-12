@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="Lengths">
+        <item>Wszystko</item>
+        <item>Długie</item>
+        <item>Średnie</item>
+        <item>Krótkie</item>
+    </string-array>
+</resources>

@@ -11,6 +11,8 @@ import com.example.movies.databinding.FragmentAddBookBinding
 import com.example.movies.utlis.BookObject
 import com.example.movies.utlis.BooksData
 import com.google.android.material.textfield.TextInputEditText
+import java.lang.Integer.parseInt
+import java.lang.Long.parseLong
 
 
 class AddBookFragment : DialogFragment() {
@@ -57,6 +59,7 @@ class AddBookFragment : DialogFragment() {
             if (bookObject != null) {
                 _binding.addTitle.setText(bookObject.bookTitle)
                 _binding.addAuthor.setText(bookObject.bookAuthor)
+                _binding.addLength.setText(bookObject.length.toString())
             }
         }
 
@@ -67,19 +70,20 @@ class AddBookFragment : DialogFragment() {
         _binding.saveButton.setOnClickListener {
             val bookTitle = _binding.addTitle.text.toString()
             val bookAuthor = _binding.addAuthor.text.toString()
+            val bookLength = parseLong(_binding.addLength.text.toString())
 
-            val bookObject = BookObject(bookTitle, bookAuthor, false)
+            val bookObject = BookObject(bookTitle, bookAuthor, false, bookLength)
 
             if(bookTitle.isNotEmpty() && bookAuthor.isNotEmpty()){
 
                 if(booksData == null){
-                    listener.onSaveBook(bookObject, _binding.addTitle, _binding.addAuthor)
+                    listener.onSaveBook(bookObject, _binding.addTitle, _binding.addAuthor, _binding.addLength)
                 }
                 else{
                     val temp = booksData?.bookObject?.readed
                     booksData?.bookObject = bookObject
                     booksData?.bookObject?.readed = temp!!
-                    listener.onUpdateBook(booksData!!, _binding.addTitle, _binding.addAuthor)
+                    listener.onUpdateBook(booksData!!, _binding.addTitle, _binding.addAuthor, _binding.addLength)
                 }
 
             }else{
@@ -93,7 +97,7 @@ class AddBookFragment : DialogFragment() {
     }
 
     interface DialogNextBtnClickListener{
-        fun onSaveBook(bookObject : BookObject, bookTitleInput : TextInputEditText, bookAuthorInput : TextInputEditText)
-        fun onUpdateBook(booksData: BooksData, bookTitleInput : TextInputEditText?, bookAuthorInput : TextInputEditText?)
+        fun onSaveBook(bookObject : BookObject, bookTitleInput : TextInputEditText, bookAuthorInput : TextInputEditText, bookLengthInput : TextInputEditText)
+        fun onUpdateBook(booksData: BooksData, bookTitleInput : TextInputEditText?, bookAuthorInput : TextInputEditText?, bookLengthInput : TextInputEditText?)
     }
 }

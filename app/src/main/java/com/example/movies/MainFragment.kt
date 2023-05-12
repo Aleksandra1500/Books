@@ -2,11 +2,13 @@ package com.example.movies
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,9 +37,11 @@ class MainFragment : Fragment(), AddBookFragment.DialogNextBtnClickListener,
 
     private lateinit var adapterToRead: BooksAdapter
     private lateinit var adapterReaded: BooksAdapter
+    private lateinit var adapterFilter: BooksAdapter
 
     private lateinit var toReadList: MutableList<BooksData>
     private lateinit var readedList: MutableList<BooksData>
+    private lateinit var filterList: MutableList<BooksData>
 
     private var emptyTextInput: TextInputEditText? = null
 
@@ -58,14 +62,40 @@ class MainFragment : Fragment(), AddBookFragment.DialogNextBtnClickListener,
         getDataFromFireBase()
         registerEvents()
 
+        val spinner = _binding.spinner
+        context?.let {
+            ArrayAdapter.createFromResource(
+                it,
+                R.array.Lengths,
+                android.R.layout.simple_spinner_item
+            ).also { adapter ->
+                // Specify the layout to use when the list of choices appears
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                // Apply the adapter to the spinner
+                spinner.adapter = adapter
+            }
+        }
+
         _binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (tab?.position == 0) {
                     _binding.toReadList.visibility = View.VISIBLE
                     _binding.readedList.visibility = View.INVISIBLE
-                } else {
+                    _binding.filterList.visibility = View.INVISIBLE
+                    _binding.spinner.visibility = View.INVISIBLE
+                    _binding.addBook.visibility = View.VISIBLE
+                } else if (tab?.position == 1) {
                     _binding.toReadList.visibility = View.INVISIBLE
                     _binding.readedList.visibility = View.VISIBLE
+                    _binding.filterList.visibility = View.INVISIBLE
+                    _binding.spinner.visibility = View.INVISIBLE
+                    _binding.addBook.visibility = View.VISIBLE
+                } else{
+                    _binding.toReadList.visibility = View.INVISIBLE
+                    _binding.readedList.visibility = View.INVISIBLE
+                    _binding.filterList.visibility = View.VISIBLE
+                    _binding.spinner.visibility = View.VISIBLE
+                    _binding.addBook.visibility = View.INVISIBLE
                 }
             }
 
@@ -88,6 +118,15 @@ class MainFragment : Fragment(), AddBookFragment.DialogNextBtnClickListener,
                 AddBookFragment.TAG
             )
         }
+
+        _binding.spinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selectedItem = parent.getItemAtPosition(position).toString()
+                getDataFromFireBase()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        })
     }
 
     private fun init(view: View){
@@ -98,6 +137,7 @@ class MainFragment : Fragment(), AddBookFragment.DialogNextBtnClickListener,
 
         toReadList = mutableListOf()
         readedList = mutableListOf()
+        filterList = mutableListOf()
 
         _binding.toReadList.setHasFixedSize(true)
         _binding.toReadList.layoutManager = LinearLayoutManager(context)
@@ -110,6 +150,12 @@ class MainFragment : Fragment(), AddBookFragment.DialogNextBtnClickListener,
         adapterReaded = BooksAdapter(readedList)
         adapterReaded.setListener(this)
         _binding.readedList.adapter = adapterReaded
+
+        _binding.filterList.setHasFixedSize(true)
+        _binding.filterList.layoutManager = LinearLayoutManager(context)
+        adapterFilter = BooksAdapter(filterList)
+        adapterFilter.setListener(this)
+        _binding.filterList.adapter = adapterFilter
     }
 
     private fun getDataFromFireBase(){
@@ -118,6 +164,7 @@ class MainFragment : Fragment(), AddBookFragment.DialogNextBtnClickListener,
             override fun onDataChange(snapshot: DataSnapshot) {
                 toReadList.clear()
                 readedList.clear()
+                filterList.clear()
                 for (taskSnapshot in snapshot.children){
                     val book = BooksData()
                     book.bookId = taskSnapshot.key.toString()
@@ -126,7 +173,8 @@ class MainFragment : Fragment(), AddBookFragment.DialogNextBtnClickListener,
                     book.bookObject = BookObject(
                         temp2.get("bookTitle").toString(),
                         temp2.get("bookAuthor").toString(),
-                        temp2.get("readed") as Boolean)
+                        temp2.get("readed") as Boolean,
+                        temp2.get("length") as Long)
 
                     if(!book.bookObject!!.readed){
                         toReadList.add(book)
@@ -134,9 +182,27 @@ class MainFragment : Fragment(), AddBookFragment.DialogNextBtnClickListener,
                     else{
                         readedList.add(book)
                     }
+
+                    if(_binding.spinner.selectedItem.toString() == "Krótkie" && book.bookObject!!.length!! <= 100)
+                    {
+                        filterList.add(book)
+                    }
+                    else if(_binding.spinner.selectedItem.toString() == "Średnie" && book.bookObject!!.length!! > 100 && book.bookObject!!.length!! <= 350)
+                    {
+                        filterList.add(book)
+                    }
+                    else if(_binding.spinner.selectedItem.toString() == "Długie" && book.bookObject!!.length!! > 350)
+                    {
+                        filterList.add(book)
+                    }
+                    else if(_binding.spinner.selectedItem.toString() == "Wszystko")
+                    {
+                        filterList.add(book)
+                    }
                 }
                 adapterToRead.notifyDataSetChanged()
                 adapterReaded.notifyDataSetChanged()
+                adapterFilter.notifyDataSetChanged()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -149,7 +215,8 @@ class MainFragment : Fragment(), AddBookFragment.DialogNextBtnClickListener,
     override fun onSaveBook(
         bookObject: BookObject,
         bookTitleInput: TextInputEditText,
-        bookAuthorInput: TextInputEditText
+        bookAuthorInput: TextInputEditText,
+        bookLengthInput : TextInputEditText
     ) {
         databaseRef.push().setValue(bookObject).addOnCompleteListener{
             if(it.isSuccessful){
@@ -166,7 +233,8 @@ class MainFragment : Fragment(), AddBookFragment.DialogNextBtnClickListener,
     override fun onUpdateBook(
         booksData: BooksData,
         bookTitleInput: TextInputEditText?,
-        bookAuthorInput: TextInputEditText?
+        bookAuthorInput: TextInputEditText?,
+        bookLengthInput : TextInputEditText?
     ) {
         val map = HashMap<String, Any>()
         map[booksData.bookId] = booksData.bookObject!!
@@ -181,6 +249,9 @@ class MainFragment : Fragment(), AddBookFragment.DialogNextBtnClickListener,
             }
             if (bookAuthorInput != null) {
                 bookAuthorInput.text = null
+            }
+            if (bookLengthInput != null) {
+                bookLengthInput.text = null
             }
             if(addBookFragment != null){
                 addBookFragment!!.dismiss()
@@ -209,6 +280,6 @@ class MainFragment : Fragment(), AddBookFragment.DialogNextBtnClickListener,
 
     override fun onCheckBoxBtnClicked(booksData: BooksData, checked: Boolean) {
         booksData.bookObject?.readed = checked
-        onUpdateBook(booksData, emptyTextInput, emptyTextInput)
+        onUpdateBook(booksData, emptyTextInput, emptyTextInput, emptyTextInput)
     }
 }

@@ -35,6 +35,17 @@ class BooksAdapter(private val list: MutableList<BooksData>) : RecyclerView.Adap
                 binding.title.text = bookObject!!.bookTitle
                 binding.author.text = bookObject.bookAuthor
                 binding.readedOrNotCheckBox.isChecked = bookObject.readed
+                var temp = bookObject.length
+                if (temp != null) {
+                    if(temp > 350){
+                        binding.length.text = "▮▮▮"
+                    } else if (temp > 100 && temp <= 350) {
+                        binding.length.text = "▮▮▯"
+                    } else if (temp <= 100) {
+                        binding.length.text = "▮▯▯"
+                    }
+                }
+
 
                 Log.d(TAG, "onBindViewHolder: $this")
                 binding.deleteBookButton.setOnClickListener{
